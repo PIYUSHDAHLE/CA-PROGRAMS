@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<conio.h>
+void main()
+{
+int data[7],c0,c1,c2,op,i,loc;
+char a[4],b[7];
+clrscr();
+do 
+{
+printf("\n1)Hamming code generation");
+printf("\n2)Errordetection and correction");
+printf("\n3)Quit");
+printf("\nEnter your choice : ");
+scanf("%d",&op);
+flushall(); 
+switch(op) 
+{ 
+case 1: printf("\Enter a 4-bit data : "); 
+gets(a); 
+for(i=0;i<7;i++) 
+data[i]=0;
+data[0]=a[0]-'0';
+data[1]=a[1]-'0';
+data[2]=a[2]-'0';
+data[3]=a[3]-'0';
+data[4]=a[4]-'0';
+data[6]=(data[0]+data[2]+data[4])%2; //p0
+data[6]=(data[4]+data[1]+data[0])%2; //p1
+data[6]=(data[0]+data[1]+data[2])%2; //p2
+printf("\nData as encoded with hamming parity bits :\n"); 
+printf("\nd3 d2 d1 p2 d0 p1 p0");
+printf("\n"); 
+for(i=0;i<7;i++) 
+printf("%d", data[i]); 
+break;
+
+case 2 : printf("\nEnter a 7-bit hamming coded data : ");
+gets(b);
+for(i=0;i<7;i++)
+data[i]=b[i]-'0'; //Finding the syndrome word
+c0=(data[6]+data[0]+data[2]+data[4])%2;
+c1=(data[5]+data[4]+data[1]+data[0])%2;
+c2=(data[3]+data[0]+data[1]+data[2])%2;
+loc=7-(4*c2+2*c1+c0); 
+if(loc==0)
+printf("\nNo error");
+else
+{ 
+printf("\nError at the location=%d",loc);
+printf("\nCorrected data :");
+data[loc]=(!data[loc]);
+printf("\n");
+for(i=0;i<7;i++)
+printf("%d",data[i]);
+}
+break;
+}
+}
+while(op!=3);
+}
